@@ -124,30 +124,30 @@ function assistantReply(message) {
 
   if (/^(mis notas|ver notas|lista de notas|qué notas tengo|que notas tengo)$/i.test(lower)) return noteList();
 
-  match = text.match(/^(?:recuerda que|recuerda|guarda en mi memoria)\\s+(.+)$/i);
+  match = text.match(/^(?:recuerda que|recuerda|guarda en mi memoria)\s+(.+)$/i);
   if (match) {
     const memoryText = match[1].trim();
     memories.push({ text: memoryText, createdAt: new Date().toISOString() });
     memories = memories.slice(-100);
     saveList(MEMORY_KEY, memories);
-    return 'Lo guardaré en mi memoria de este navegador:\\n“' + memoryText + '”\\n\\nPuedes consultarlo escribiendo “mis recuerdos” o “qué recuerdas de mí”.';
+    return 'Lo guardaré en mi memoria de este navegador:\n“' + memoryText + '”\n\nPuedes consultarlo escribiendo “mis recuerdos” o “qué recuerdas de mí”.';
   }
 
   if (/^(mis recuerdos|ver recuerdos|qué recuerdas de mí|que recuerdas de mi|qué recuerdas|que recuerdas)$/i.test(lower)) {
-    return memoryList() + '\\n\\nTambién tengo estas preferencias guardadas:\\n' + profileSummary();
+    return memoryList() + '\n\nTambién tengo estas preferencias guardadas:\n' + profileSummary();
   }
 
-  match = lower.match(/^(?:olvida|borrar|eliminar) recuerdo\\s*(\\d+)$/i);
+  match = lower.match(/^(?:olvida|borrar|eliminar) recuerdo\s*(\d+)$/i);
   if (match) {
     const index = Number(match[1]) - 1;
     if (!memories[index]) return 'No encuentro el recuerdo ' + match[1] + '. Escribe “mis recuerdos” para ver la lista.';
     const removed = memories.splice(index, 1)[0];
     saveList(MEMORY_KEY, memories);
-    return 'He olvidado este recuerdo de este navegador:\\n“' + removed.text + '”';
+    return 'He olvidado este recuerdo de este navegador:\n“' + removed.text + '”';
   }
 
   if (/^(mis preferencias|mi perfil)$/i.test(lower)) {
-    return profile.length ? 'Estas son tus preferencias guardadas:\\n' + profileSummary() + '\\n\\nPuedes cambiar una con: cambiar trato a amistoso, cambiar explicaciones a breve o cambiar prioridad a aprendizaje.' : 'Aún no hay preferencias guardadas.';
+    return profile.length ? 'Estas son tus preferencias guardadas:\n' + profileSummary() + '\n\nPuedes cambiar una con: cambiar trato a amistoso, cambiar explicaciones a breve o cambiar prioridad a aprendizaje.' : 'Aún no hay preferencias guardadas.';
   }
 
   match = lower.match(/^cambiar (trato|explicaciones|prioridad) a (.+)$/i);
