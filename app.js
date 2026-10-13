@@ -205,9 +205,13 @@ function assistantReply(message) {
     return 'Empecemos por algo pequeño. Dime cuál es tu objetivo principal ahora mismo y te ayudo a dividirlo en pasos concretos. Si ya me lo contaste antes, puedo revisar tus recuerdos con “mis recuerdos”.' + memoryContext;
   }
 
+  if (/\b(ganar dinero por internet|ganar dinero en internet|hacer dinero por internet|dinero online|ingresos por internet|ganar plata por internet|ganar plata en internet)\b/i.test(lower)) {
+    return '¡Vamos a empezar desde cero! Hay varias opciones reales para explorar: reventa de productos, ofrecer servicios digitales sencillos o crear contenido. No necesitas invertir dinero de inmediato.\n\nMi recomendación es comparar las opciones según tu presupuesto, tiempo y habilidades antes de elegir. Para orientarte mejor, dime: ¿quieres empezar sin invertir nada, o tienes un pequeño presupuesto para probar?';
+  }
+
   if (/\b(quiero aprender|estoy aprendiendo|quiero mejorar|mi objetivo es|mi meta es)\b/i.test(lower)) {
     const memoryContext = memories.length ? '\n\nRecuerdos que pueden ayudarme a orientarte: ' + memories.slice(-3).map(item => item.text).join('; ') + '.' : '';
-    return 'Perfecto. Para avanzar, conviene definir una meta concreta y una acción pequeña para hoy. Puedo guardar tu objetivo como recuerdo si escribes “recuerda que...” y convertir la primera acción en una tarea.' + memoryContext;
+    return 'Perfecto, vamos a convertirlo en un plan práctico. Primero definimos qué quieres conseguir, luego elegimos una acción pequeña para hoy y la dividimos en pasos. Si me dices un poco más sobre tu objetivo, te propondré un siguiente paso concreto. Puedes guardar el objetivo con “recuerda que...” y la acción con “añadir tarea ...”.' + memoryContext;
   }
 
   if (/\b(c[oó]mo est[aá]s|qu[eé] tal|c[oó]mo va todo)\b/i.test(lower)) {
