@@ -1,0 +1,38 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#10131c">
+  <meta name="description" content="Tu espacio personal para conversar con tu futura asistente de IA.">
+  <title>Mi IA Personal</title>
+  <link rel="stylesheet" href="styles.css">
+  <script src="app.js" defer></script>
+</head>
+<body>
+  <div class="app-shell">
+    <aside class="sidebar" aria-label="Panel de conversaciones">
+      <a class="brand" href="./" aria-label="Mi IA Personal, inicio"><span class="brand-mark">✳</span><span>mi IA <b>personal</b></span></a>
+      <button id="new-chat" class="new-chat" type="button"><span>＋</span> Nueva conversación</button>
+      <p class="side-label">TU ESPACIO</p>
+      <div class="side-note"><span class="status-dot"></span><span>Proyecto en construcción</span></div>
+      <div class="sidebar-bottom"><span class="avatar">IA</span><div><strong>Mi asistente</strong><small>Versión inicial</small></div></div>
+    </aside>
+
+    <main class="main-panel">
+      <header class="topbar"><button id="menu-toggle" class="icon-button mobile-only" type="button" aria-label="Abrir menú">☰</button><div class="topbar-title"><span class="online-dot"></span><span>Mi IA Personal</span></div><span class="version-pill">PROTOTIPO</span></header>
+      <section class="chat-area" aria-label="Chat con tu asistente">
+        <div id="welcome" class="welcome">
+          <div class="welcome-icon">✳</div>
+          <p class="eyebrow">TU ESPACIO, TUS IDEAS</p>
+          <h1>Hola, ¿qué vamos a<br><span>crear hoy?</span></h1>
+          <p class="welcome-copy">Estoy empezando a tomar forma. Escribe algo para probar la interfaz y construir juntos tu asistente personal.</p>
+          <div class="suggestions"><button class="suggestion" data-prompt="Ayúdame a organizar mis metas de esta semana." type="button"><span>◷</span> Organizar mis metas</button><button class="suggestion" data-prompt="Dame ideas para aprender algo nuevo." type="button"><span>✧</span> Aprender algo nuevo</button><button class="suggestion" data-prompt="Ayúdame a planear un proyecto desde cero." type="button"><span>⌘</span> Crear un proyecto</button></div>
+        </div>
+        <div id="messages" class="messages" aria-live="polite" aria-relevant="additions text"></div>
+      </section>
+      <footer class="composer-wrap"><form id="chat-form" class="composer"><label class="sr-only" for="message-input">Escribe tu mensaje</label><textarea id="message-input" rows="1" maxlength="2000" placeholder="Escribe un mensaje..." required></textarea><button id="send-button" class="send-button" type="submit" aria-label="Enviar mensaje"><span>↑</span></button></form><p class="disclaimer">Versión de prueba · Las respuestas son de demostración, no de un modelo de IA real.</p></footer>
+    </main>
+  </div>
+</body>
+</html>
