@@ -73,7 +73,7 @@ function noteList() {
 
 function profileSummary() {
   const labels = { trato: 'Cómo hablarme', explicaciones: 'Cómo explicarme', prioridad: 'Mis prioridades' };
-  return profile.map((item, i) => `${i + 1}. ${labels[item.key] || item.key}: ${item.value}`).join('\\n');
+  return profile.map((item, i) => `${i + 1}. ${labels[item.key] || item.key}: ${item.value}`).join('\n');
 }
 
 function assistantReply(message) {
@@ -118,7 +118,7 @@ function assistantReply(message) {
   if (/^(mis notas|ver notas|lista de notas|qué notas tengo|que notas tengo)$/i.test(lower)) return noteList();
 
   if (/^(mis preferencias|mi perfil|qué recuerdas de mí|que recuerdas de mi)$/i.test(lower)) {
-    return profile.length ? 'Estas son tus preferencias guardadas:\\n' + profileSummary() + '\\n\\nPuedes cambiar una con: cambiar trato a amistoso, cambiar explicaciones a breve o cambiar prioridad a aprendizaje.' : 'Aún no hay preferencias guardadas.';
+    return profile.length ? 'Estas son tus preferencias guardadas:\n' + profileSummary() + '\n\nPuedes cambiar una con: cambiar trato a amistoso, cambiar explicaciones a breve o cambiar prioridad a aprendizaje.' : 'Aún no hay preferencias guardadas.';
   }
 
   match = lower.match(/^cambiar (trato|explicaciones|prioridad) a (.+)$/i);
@@ -135,7 +135,7 @@ function assistantReply(message) {
     if (existing) { existing.value = value; existing.updatedAt = new Date().toISOString(); }
     else profile.push({ key, value, updatedAt: new Date().toISOString() });
     saveList(PROFILE_KEY, profile);
-    return 'Preferencia actualizada. Guardé: ' + key + ' = ' + value + '.\\n\\nEscribe “mis preferencias” para revisar tu perfil.';
+    return 'Preferencia actualizada. Guardé: ' + key + ' = ' + value + '.\n\nEscribe “mis preferencias” para revisar tu perfil.';
   }
 
   if (/^(ayuda|comandos|qué puedes hacer|que puedes hacer)$/i.test(lower)) {
