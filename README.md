@@ -1,28 +1,36 @@
-# Mi IA Personal
+# Luciana — asistente personal
 
-Proyecto para construir una asistente de IA personal desde cero, empezando con una interfaz web sencilla y herramientas gratuitas.
-
-## Estado actual
-
-Primera versión de la interfaz: chat web, diseño adaptable y guardado local del historial en el navegador. Esta versión inicial usa respuestas de demostración; todavía no está conectada a un modelo de lenguaje real.
+Interfaz web publicada con GitHub Pages y un backend opcional para conversación con IA.
 
 ## Archivos
 
-- `index.html`: estructura de la aplicación.
-- `styles.css`: estilos y diseño adaptable.
-- `app.js`: chat de demostración y persistencia local.
+- `index.html`: interfaz.
+- `styles.css`: diseño.
+- `app.js`: chat, tareas, notas, preferencias y memoria local; conexión opcional con el backend.
+- `backend/cloudflare-worker.js`: backend para Cloudflare Workers. No contiene claves secretas.
 
-## Cómo probarla
+## Activar la conversación con IA
 
-Abre `index.html` en un navegador, o activa GitHub Pages desde **Settings → Pages** y selecciona la rama `main` y la carpeta `/ (root)`.
+La web por sí sola no puede guardar de forma segura una clave de proveedor. El backend mantiene la clave fuera del navegador y del repositorio.
 
-## Próximas etapas
+1. Crea una cuenta gratuita en [Google AI Studio](https://aistudio.google.com/app/apikey) y genera una clave de Gemini API. Revisa las condiciones del nivel gratuito antes de enviar datos personales; los límites y modelos disponibles pueden cambiar.
+2. Crea una cuenta en [Cloudflare](https://dash.cloudflare.com/) y abre **Workers & Pages → Create → Worker**.
+3. Crea el Worker y pega el contenido de `backend/cloudflare-worker.js` en el editor de código. Guarda y despliega.
+4. En la configuración del Worker, abre **Settings → Variables and Secrets** (el nombre exacto puede variar), añade un secreto llamado `GEMINI_API_KEY` y pega allí la clave. No la añadas al código ni a GitHub. Vuelve a desplegar si Cloudflare lo solicita.
+5. Comprueba la URL del Worker abriendo su raíz; debe mostrar un JSON con `"ok":true`. La ruta de chat es la misma URL terminada en `/chat`.
+6. Abre [tu web de Luciana](https://ffbricio912010-sys.github.io/ia-proyecto-luciana-/), recarga con `Ctrl + F5` y escribe en el chat:
+   `configurar ia https://TU-WORKER.TU-SUBDOMINIO.workers.dev/chat`
+   Sustituye la URL de ejemplo por la URL real de tu Worker y añade `/chat`.
+7. Envía un mensaje normal, por ejemplo: `Explícame cómo empezar a aprender inglés en 15 minutos al día.`
 
-1. Publicar la interfaz con GitHub Pages.
-2. Elegir un proveedor de modelo con nivel gratuito disponible.
-3. Crear un backend seguro para mantener la clave de API fuera del navegador y del repositorio.
-4. Añadir memoria configurable y funciones personales.
+Para comprobar la conexión escribe `estado ia`. Para desconectarla en este navegador escribe `desconectar ia`.
 
-## Seguridad
+## Importante
 
-No pongas claves de API, contraseñas ni datos personales sensibles en este repositorio. GitHub Pages solo sirve archivos estáticos; para conectar una IA real con una clave privada se necesita un backend o una función serverless.
+- El endpoint configurado se guarda en el almacenamiento local de este navegador.
+- La memoria y el historial de Luciana siguen guardándose localmente; todavía no se sincronizan entre dispositivos.
+- No pongas claves API en `app.js`, `index.html`, capturas de pantalla ni commits.
+- El nivel gratuito de un proveedor puede tener límites, cambiar o no estar disponible para todas las cuentas/regiones.
+- La URL del Worker es pública. CORS limita los navegadores autorizados, pero no es autenticación ni evita todas las llamadas automatizadas. Antes de compartir ampliamente la web, configura límites de solicitudes en Cloudflare y vigila el uso de la API.
+- El proveedor procesa los mensajes enviados a la IA. No envíes contraseñas ni información sensible.
+- El backend usa el modelo `gemini-2.5-flash`; si el proveedor deja de ofrecerlo a tu cuenta, cambia el identificador del modelo en `backend/cloudflare-worker.js` por uno disponible en tu cuenta.
