@@ -229,17 +229,99 @@ function assistantReply(message) {
   return 'Voy directo: todavía no comprendo mensajes libres como una IA conversacional. Sí puedo ayudarte con tareas, notas, preferencias y planes sencillos. Prueba “ayuda” o cuéntame si quieres organizar un objetivo, guardar una nota o gestionar tareas.';
 }
 
-function sendMessage(text) {
+const AI_ENDPOINT_KEY = 'luciana-ai-endpoint-v1';
+
+function getAIEndpoint() {
+  try { return localStorage.getItem(AI_ENDPOINT_KEY) || ''; } catch { return ''; }
+}
+
+function setAIEndpoint(url) {
+  try { localStorage.setItem(AI_ENDPOINT_KEY, url); } catch { /* Endpoint remains available for this session only. */ }
+}
+
+async function requestAIReply(endpoint) {
+  const recentMessages = history.slice(-20).map(item => ({
+    role: item.role,
+    content: item.text
+  }));
+  const response = await fetch(endpoint, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ messages: recentMessages })
+  });
+  const data = await response.json().catch(() => ({}));
+  if (!response.ok) {
+    throw new Error(data.error || 'El servidor de IA respondió con un error (' + response.status + ').');
+  }
+  if (typeof data.reply !== 'string' || !data.reply.trim()) {
+    throw new Error('El servidor respondió, pero no devolvió una respuesta válida.');
+  }
+  return data.reply.trim();
+}
+
+async function sendMessage(text) {
   const clean = text.trim();
   if (!clean) return;
+
+  const configureMatch = clean.match(/^configurar ia\s+(https:\/\/\S+)$/i);
+  const isStatusCommand = /^(estado ia|estado de la ia)$/i.test(clean);
+  const isDisconnectCommand = /^(desconectar ia|quitar ia|desactivar ia)$/i.test(clean);
+
   history.push({ role: 'user', text: clean });
-  history.push({ role: 'assistant', text: assistantReply(clean) });
-  history = history.slice(-80);
-  saveList(CHAT_KEY, history);
-  renderHistory();
+  let localResponse = '';
+
+  if (configureMatch) {
+    try {
+      const parsed = new URL(configureMatch[1]);
+      if (parsed.protocol !== 'https:') throw new Error('Solo se permiten direcciones HTTPS.');
+      setAIEndpoint(parsed.href.replace(/\/$/, ''));
+      localResponse = '¡Conexión configurada! A partir de tu próximo mensaje intentaré responder usando la IA. Puedes comprobarlo escribiendo “estado ia”.';
+    } catch {
+      localResponse = 'Esa dirección no parece válida. Copia la URL HTTPS de tu Worker y escribe: configurar ia https://tu-worker.tu-subdominio.workers.dev';
+    }
+  } else if (isStatusCommand) {
+    localResponse = getAIEndpoint()
+      ? 'La conexión con el servidor de IA está configurada en este navegador. Enviaré los próximos mensajes a ese servidor.'
+      : 'Todavía no hay un servidor de IA configurado. Cuando publiques el backend, escribe: configurar ia https://tu-worker.tu-subdominio.workers.dev';
+  } else if (isDisconnectCommand) {
+    setAIEndpoint('');
+    localResponse = 'Desconecté el servidor de IA de este navegador. Luciana volverá a usar sus respuestas programadas.';
+  }
+
   input.value = '';
   input.style.height = 'auto';
   input.focus();
+
+  if (localResponse) {
+    history.push({ role: 'assistant', text: localResponse });
+  } else {
+    const endpoint = getAIEndpoint();
+    if (endpoint) {
+      history.push({ role: 'assistant', text: 'Estoy pensando…' });
+      history = history.slice(-80);
+      saveList(CHAT_KEY, history);
+      renderHistory();
+      try {
+        const reply = await requestAIReply(endpoint);
+        const last = history[history.length - 1];
+        if (last && last.role === 'assistant' && last.text === 'Estoy pensando…') history.pop();
+        history.push({ role: 'assistant', text: reply });
+      } catch (error) {
+        const last = history[history.length - 1];
+        if (last && last.role === 'assistant' && last.text === 'Estoy pensando…') history.pop();
+        history.push({
+          role: 'assistant',
+          text: 'No pude conectar con la IA. Revisa que el Worker esté publicado, que la clave esté configurada y que la URL sea correcta. Detalle: ' + error.message
+        });
+      }
+    } else {
+      history.push({ role: 'assistant', text: assistantReply(clean) });
+    }
+  }
+
+  history = history.slice(-80);
+  saveList(CHAT_KEY, history);
+  renderHistory();
 }
 
 form.addEventListener('submit', event => {
