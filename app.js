@@ -63,9 +63,9 @@ function assistantReply(message) {
   const text = message.trim();
   const lower = text.toLocaleLowerCase('es');
 
-  let match = lower.match(/^(?:añadir|agregar|crear|apuntar|recuérdame|recuerdame)(?: una)? tarea\s*[:\-]?\s*(.+)$/i);
+  let match = text.match(/^(?:añadir|agregar|crear|apuntar|recuérdame|recuerdame)(?: una)? tarea\s*[:\-]?\s*(.+)$/i);
   if (match) {
-    const taskText = text.slice(text.toLocaleLowerCase('es').indexOf(match[1])).trim();
+    const taskText = match[1].trim();
     tasks.push({ text: taskText, done: false, createdAt: new Date().toISOString() });
     saveList(TASKS_KEY, tasks);
     return `¡Listo! Guardé esta tarea:\n“${taskText}”\n\nPuedes ver todas escribiendo “mis tareas”.`;
