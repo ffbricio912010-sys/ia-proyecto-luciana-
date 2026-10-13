@@ -7,7 +7,7 @@
   <meta name="description" content="Luciana, tu asistente personal gratuita para organizar tareas y guardar notas.">
   <title>Luciana · Asistente personal</title>
   <link rel="stylesheet" href="styles.css">
-  <script src="app.js?v=3" defer></script>
+  <script src="app.js?v=4" defer></script>
 </head>
 <body>
   <div class="app-shell">
@@ -20,18 +20,18 @@
     </aside>
 
     <main class="main-panel">
-      <header class="topbar"><button id="menu-toggle" class="icon-button mobile-only" type="button" aria-label="Abrir menú">☰</button><div class="topbar-title"><span class="online-dot"></span><span>Luciana · Asistente personal</span></div><span class="version-pill">VERSIÓN 1</span></header>
+      <header class="topbar"><button id="menu-toggle" class="icon-button mobile-only" type="button" aria-label="Abrir menú">☰</button><div class="topbar-title"><span class="online-dot"></span><span>Luciana · Asistente personal</span></div><span class="version-pill">VERSIÓN 2</span></header>
       <section class="chat-area" aria-label="Chat con Luciana">
         <div id="welcome" class="welcome">
           <div class="welcome-icon">✳</div>
           <p class="eyebrow">TU ASISTENTE PERSONAL</p>
           <h1>Hola, soy <span>Luciana.</span></h1>
-          <p class="welcome-copy">Puedo guardar tareas, notas, preferencias y recuerdos personales en este navegador, sin conectar un modelo externo. Escribe “ayuda” para ver los comandos disponibles.</p>
+          <p class="welcome-copy">Puedo ayudarte con preguntas y, si configuras el servidor de IA, conversar contigo de forma natural. Las tareas, notas y recuerdos se guardan en este navegador.</p>
           <div class="suggestions"><button class="suggestion" data-prompt="añadir tarea organizar mi semana" type="button"><span>◷</span> Añadir una tarea</button><button class="suggestion" data-prompt="nota mi idea para un proyecto nuevo" type="button"><span>✧</span> Guardar una nota</button><button class="suggestion" data-prompt="ayuda" type="button"><span>⌘</span> Ver qué puedo hacer</button></div>
         </div>
         <div id="messages" class="messages" aria-live="polite" aria-relevant="additions text"></div>
       </section>
-      <footer class="composer-wrap"><form id="chat-form" class="composer"><label class="sr-only" for="message-input">Escribe tu mensaje</label><textarea id="message-input" rows="1" maxlength="2000" placeholder="Prueba: añadir tarea estudiar inglés" required></textarea><button id="send-button" class="send-button" type="submit" aria-label="Enviar mensaje"><span>↑</span></button></form><p class="disclaimer">Versión inicial · Funciones programadas, sin modelo de IA externo. Tus notas, tareas, preferencias y recuerdos se guardan en este navegador.</p></footer>
+      <footer class="composer-wrap"><form id="chat-form" class="composer"><label class="sr-only" for="message-input">Escribe tu mensaje</label><textarea id="message-input" rows="1" maxlength="2000" placeholder="Escribe un mensaje para Luciana…" required></textarea><button id="send-button" class="send-button" type="submit" aria-label="Enviar mensaje"><span>↑</span></button></form><p class="disclaimer">Las tareas, notas y recuerdos se guardan en este navegador. Si activas la IA, tus mensajes se enviarán al proveedor configurado.</p></footer>
     </main>
   </div>
 </body>
