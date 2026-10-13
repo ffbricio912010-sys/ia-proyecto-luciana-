@@ -139,18 +139,38 @@ function assistantReply(message) {
   }
 
   if (/^(ayuda|comandos|qué puedes hacer|que puedes hacer)$/i.test(lower)) {
-    return 'Por ahora puedo ayudarte con tareas y notas. Prueba estos comandos:\n\n• añadir tarea estudiar inglés\n• mis tareas\n• completar tarea 1\n• eliminar tarea 1\n• nota mi idea para el proyecto\n• mis notas\n\nFunciono sin una API ni un modelo externo. Mis funciones son reglas programadas, así que todavía no comprendo cualquier pregunta libre.';
+    return 'Voy directo: puedo gestionar tareas, notas y preferencias.\n\nTareas: “añadir tarea estudiar inglés”, “mis tareas”, “completar tarea 1” o “eliminar tarea 1”.\n\nNotas: “nota mi idea para el proyecto” y “mis notas”.\n\nMemoria: “mis preferencias” o “cambiar explicaciones a breve”.\n\nNo uso un modelo externo; entiendo los comandos que están programados.';
   }
 
   if (/\b(hola|buenas|buenos días|buenas tardes|hey)\b/i.test(lower)) {
     return '¡Hola! Soy Luciana, tu asistente personal. Puedo guardar tareas, notas y recordar tus preferencias en este navegador. Escribe “ayuda” para ver mis comandos.';
   }
 
-  if (/\b(organizar|organización|planificar|plan|metas)\b/i.test(lower)) {
-    return 'Podemos empezar por dividir tu objetivo en tareas pequeñas. Por ejemplo, escribe “añadir tarea investigar mi idea” y después “añadir tarea dedicarle 20 minutos”. Escribe “mis tareas” para ver tu lista.';
+  if (/\b(organizar|organización|planificar|plan|metas|objetivo|empezar un negocio|reventa|reselling)\b/i.test(lower)) {
+    return 'Vamos paso a paso desde cero.\n\n1. Define qué quieres conseguir.\n2. Escribe una primera acción pequeña y concreta.\n3. Guárdala con “añadir tarea [tu acción]”.\n4. Consulta tu plan con “mis tareas”.\n\nSi me dices tu objetivo concreto, puedo orientarte mejor dentro de las funciones que tengo programadas.';
   }
 
-  return 'Quiero ayudarte, pero todavía no tengo un modelo de IA que entienda cualquier mensaje. De momento puedo guardar y gestionar tareas y notas usando comandos. Escribe “ayuda” para ver ejemplos.';
+  if (/\b(gracias|muchas gracias|te lo agradezco)\b/i.test(lower)) {
+    return 'De nada. Dime qué quieres hacer ahora y lo vemos paso a paso.';
+  }
+
+  if (/\b(quién eres|quien eres|qué eres|que eres)\b/i.test(lower)) {
+    return 'Soy Luciana, una asistente personal en desarrollo. Guardo tareas, notas y preferencias en este navegador. Para ser transparente: por ahora no tengo un modelo de IA, así que respondo mediante reglas y comandos programados.';
+  }
+
+  if (/\b(preferencia|preferencias|memoria|recordar)\b/i.test(lower)) {
+    return 'Puedo guardar tus preferencias localmente. Escribe “mis preferencias” para verlas o “cambiar trato a amistoso” para modificar una. Tus datos se guardan en este navegador.';
+  }
+
+  if (/\b(tarea|tareas|pendiente|pendientes)\b/i.test(lower)) {
+    return 'Para gestionar pendientes, escribe “añadir tarea” seguido de lo que necesitas hacer. Para ver la lista, escribe “mis tareas”. Para marcar la primera como terminada, escribe “completar tarea 1”.';
+  }
+
+  if (/\b(nota|notas|idea|ideas)\b/i.test(lower)) {
+    return 'Puedo guardar ideas como notas. Escribe “nota” seguido de tu idea y después usa “mis notas” para consultarlas.';
+  }
+
+  return 'Voy directo: todavía no comprendo mensajes libres como una IA conversacional. Sí puedo ayudarte con tareas, notas, preferencias y planes sencillos. Prueba “ayuda” o cuéntame si quieres organizar un objetivo, guardar una nota o gestionar tareas.';
 }
 
 function sendMessage(text) {
