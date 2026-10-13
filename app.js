@@ -1,6 +1,7 @@
 const CHAT_KEY = 'luciana-chat-v1';
 const TASKS_KEY = 'luciana-tasks-v1';
 const NOTES_KEY = 'luciana-notes-v1';
+const PROFILE_KEY = 'luciana-profile-v1';
 
 const form = document.querySelector('#chat-form');
 const input = document.querySelector('#message-input');
@@ -13,6 +14,17 @@ const sidebar = document.querySelector('.sidebar');
 let history = loadList(CHAT_KEY, item => item && ['user', 'assistant'].includes(item.role) && typeof item.text === 'string').slice(-80);
 let tasks = loadList(TASKS_KEY, item => item && typeof item.text === 'string' && typeof item.done === 'boolean');
 let notes = loadList(NOTES_KEY, item => item && typeof item.text === 'string');
+let profile = loadList(PROFILE_KEY, item => item && typeof item.key === 'string' && typeof item.value === 'string');
+
+const DEFAULT_PROFILE = [
+  { key: 'trato', value: 'directo y sin rodeos' },
+  { key: 'explicaciones', value: 'paso a paso desde cero' },
+  { key: 'prioridad', value: 'un poco de todo' }
+];
+if (profile.length === 0) {
+  profile = DEFAULT_PROFILE.map(item => ({ ...item, updatedAt: new Date().toISOString() }));
+  saveList(PROFILE_KEY, profile);
+}
 
 function loadList(key, isValid) {
   try {
@@ -59,6 +71,11 @@ function noteList() {
   return 'Tus notas guardadas:\n' + notes.map((note, i) => `${i + 1}. ${note.text}`).join('\n');
 }
 
+function profileSummary() {
+  const labels = { trato: 'Cómo hablarme', explicaciones: 'Cómo explicarme', prioridad: 'Mis prioridades' };
+  return profile.map((item, i) => `${i + 1}. ${labels[item.key] || item.key}: ${item.value}`).join('\\n');
+}
+
 function assistantReply(message) {
   const text = message.trim();
   const lower = text.toLocaleLowerCase('es');
@@ -100,12 +117,33 @@ function assistantReply(message) {
 
   if (/^(mis notas|ver notas|lista de notas|qué notas tengo|que notas tengo)$/i.test(lower)) return noteList();
 
+  if (/^(mis preferencias|mi perfil|qué recuerdas de mí|que recuerdas de mi)$/i.test(lower)) {
+    return profile.length ? 'Estas son tus preferencias guardadas:\\n' + profileSummary() + '\\n\\nPuedes cambiar una con: cambiar trato a amistoso, cambiar explicaciones a breve o cambiar prioridad a aprendizaje.' : 'Aún no hay preferencias guardadas.';
+  }
+
+  match = lower.match(/^cambiar (trato|explicaciones|prioridad) a (.+)$/i);
+  if (match) {
+    const key = match[1];
+    const value = match[2].trim();
+    const allowed = {
+      trato: ['directo y sin rodeos', 'amistoso', 'formal', 'directo'],
+      explicaciones: ['paso a paso desde cero', 'breve', 'detallado', 'con ejemplos'],
+      prioridad: ['un poco de todo', 'productividad', 'negocio', 'aprendizaje']
+    };
+    if (!allowed[key].includes(value)) return 'Esa opción todavía no está configurada. Prueba “mis preferencias” para ver tu perfil actual y las opciones disponibles.';
+    const existing = profile.find(item => item.key === key);
+    if (existing) { existing.value = value; existing.updatedAt = new Date().toISOString(); }
+    else profile.push({ key, value, updatedAt: new Date().toISOString() });
+    saveList(PROFILE_KEY, profile);
+    return 'Preferencia actualizada. Guardé: ' + key + ' = ' + value + '.\\n\\nEscribe “mis preferencias” para revisar tu perfil.';
+  }
+
   if (/^(ayuda|comandos|qué puedes hacer|que puedes hacer)$/i.test(lower)) {
     return 'Por ahora puedo ayudarte con tareas y notas. Prueba estos comandos:\n\n• añadir tarea estudiar inglés\n• mis tareas\n• completar tarea 1\n• eliminar tarea 1\n• nota mi idea para el proyecto\n• mis notas\n\nFunciono sin una API ni un modelo externo. Mis funciones son reglas programadas, así que todavía no comprendo cualquier pregunta libre.';
   }
 
   if (/\b(hola|buenas|buenos días|buenas tardes|hey)\b/i.test(lower)) {
-    return '¡Hola! 👋 Soy Luciana, tu asistente personal en construcción. Ya puedo guardar tareas y notas en este navegador. Escribe “ayuda” para ver lo que puedo hacer.';
+    return '¡Hola! Soy Luciana, tu asistente personal. Puedo guardar tareas, notas y recordar tus preferencias en este navegador. Escribe “ayuda” para ver mis comandos.';
   }
 
   if (/\b(organizar|organización|planificar|plan|metas)\b/i.test(lower)) {
