@@ -4,34 +4,34 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="theme-color" content="#10131c">
-  <meta name="description" content="Tu espacio personal para conversar con tu futura asistente de IA.">
-  <title>Mi IA Personal</title>
+  <meta name="description" content="Luciana, tu asistente personal gratuita para organizar tareas y guardar notas.">
+  <title>Luciana · Asistente personal</title>
   <link rel="stylesheet" href="styles.css">
   <script src="app.js" defer></script>
 </head>
 <body>
   <div class="app-shell">
     <aside class="sidebar" aria-label="Panel de conversaciones">
-      <a class="brand" href="./" aria-label="Mi IA Personal, inicio"><span class="brand-mark">✳</span><span>mi IA <b>personal</b></span></a>
+      <a class="brand" href="./" aria-label="Luciana, inicio"><span class="brand-mark">✳</span><span>Luciana <b>asistente</b></span></a>
       <button id="new-chat" class="new-chat" type="button"><span>＋</span> Nueva conversación</button>
       <p class="side-label">TU ESPACIO</p>
-      <div class="side-note"><span class="status-dot"></span><span>Proyecto en construcción</span></div>
-      <div class="sidebar-bottom"><span class="avatar">IA</span><div><strong>Mi asistente</strong><small>Versión inicial</small></div></div>
+      <div class="side-note"><span class="status-dot"></span><span>Asistente personal</span></div>
+      <div class="sidebar-bottom"><span class="avatar">LU</span><div><strong>Luciana</strong><small>Versión inicial · gratis</small></div></div>
     </aside>
 
     <main class="main-panel">
-      <header class="topbar"><button id="menu-toggle" class="icon-button mobile-only" type="button" aria-label="Abrir menú">☰</button><div class="topbar-title"><span class="online-dot"></span><span>Mi IA Personal</span></div><span class="version-pill">PROTOTIPO</span></header>
-      <section class="chat-area" aria-label="Chat con tu asistente">
+      <header class="topbar"><button id="menu-toggle" class="icon-button mobile-only" type="button" aria-label="Abrir menú">☰</button><div class="topbar-title"><span class="online-dot"></span><span>Luciana · Asistente personal</span></div><span class="version-pill">VERSIÓN 1</span></header>
+      <section class="chat-area" aria-label="Chat con Luciana">
         <div id="welcome" class="welcome">
           <div class="welcome-icon">✳</div>
-          <p class="eyebrow">TU ESPACIO, TUS IDEAS</p>
-          <h1>Hola, ¿qué vamos a<br><span>crear hoy?</span></h1>
-          <p class="welcome-copy">Estoy empezando a tomar forma. Escribe algo para probar la interfaz y construir juntos tu asistente personal.</p>
-          <div class="suggestions"><button class="suggestion" data-prompt="Ayúdame a organizar mis metas de esta semana." type="button"><span>◷</span> Organizar mis metas</button><button class="suggestion" data-prompt="Dame ideas para aprender algo nuevo." type="button"><span>✧</span> Aprender algo nuevo</button><button class="suggestion" data-prompt="Ayúdame a planear un proyecto desde cero." type="button"><span>⌘</span> Crear un proyecto</button></div>
+          <p class="eyebrow">TU ASISTENTE PERSONAL</p>
+          <h1>Hola, soy <span>Luciana.</span></h1>
+          <p class="welcome-copy">Puedo guardar tus tareas y notas en este navegador sin usar una API ni conectar un modelo externo. Escribe “ayuda” para ver los comandos disponibles.</p>
+          <div class="suggestions"><button class="suggestion" data-prompt="añadir tarea organizar mi semana" type="button"><span>◷</span> Añadir una tarea</button><button class="suggestion" data-prompt="nota mi idea para un proyecto nuevo" type="button"><span>✧</span> Guardar una nota</button><button class="suggestion" data-prompt="ayuda" type="button"><span>⌘</span> Ver qué puedo hacer</button></div>
         </div>
         <div id="messages" class="messages" aria-live="polite" aria-relevant="additions text"></div>
       </section>
-      <footer class="composer-wrap"><form id="chat-form" class="composer"><label class="sr-only" for="message-input">Escribe tu mensaje</label><textarea id="message-input" rows="1" maxlength="2000" placeholder="Escribe un mensaje..." required></textarea><button id="send-button" class="send-button" type="submit" aria-label="Enviar mensaje"><span>↑</span></button></form><p class="disclaimer">Versión de prueba · Las respuestas son de demostración, no de un modelo de IA real.</p></footer>
+      <footer class="composer-wrap"><form id="chat-form" class="composer"><label class="sr-only" for="message-input">Escribe tu mensaje</label><textarea id="message-input" rows="1" maxlength="2000" placeholder="Prueba: añadir tarea estudiar inglés" required></textarea><button id="send-button" class="send-button" type="submit" aria-label="Enviar mensaje"><span>↑</span></button></form><p class="disclaimer">Versión inicial · Funciones programadas, sin modelo de IA externo. Tus notas y tareas se guardan en este navegador.</p></footer>
     </main>
   </div>
 </body>
