@@ -199,6 +199,29 @@ function assistantReply(message) {
     return 'Puedo guardar ideas como notas. Escribe “nota” seguido de tu idea y después usa “mis notas” para consultarlas.';
   }
 
+  // Respuestas más útiles para peticiones comunes expresadas de forma natural.
+  if (/\\b(qu[eé] me recomiendas|por d[oó]nde empiezo|no s[eé] por d[oó]nde empezar|ay[uú]dame a empezar)\\b/i.test(lower)) {
+    const memoryContext = memories.length ? '\\n\\nTendré en cuenta lo que me has contado: ' + memories.slice(-3).map(item => item.text).join('; ') + '.' : '';
+    return 'Empecemos por algo pequeño. Dime cuál es tu objetivo principal ahora mismo y te ayudo a dividirlo en pasos concretos. Si ya me lo contaste antes, puedo revisar tus recuerdos con “mis recuerdos”.' + memoryContext;
+  }
+
+  if (/\\b(quiero aprender|estoy aprendiendo|quiero mejorar|mi objetivo es|mi meta es)\\b/i.test(lower)) {
+    const memoryContext = memories.length ? '\\n\\nRecuerdos que pueden ayudarme a orientarte: ' + memories.slice(-3).map(item => item.text).join('; ') + '.' : '';
+    return 'Perfecto. Para avanzar, conviene definir una meta concreta y una acción pequeña para hoy. Puedo guardar tu objetivo como recuerdo si escribes “recuerda que...” y convertir la primera acción en una tarea.' + memoryContext;
+  }
+
+  if (/\\b(c[oó]mo est[aá]s|qu[eé] tal|c[oó]mo va todo)\\b/i.test(lower)) {
+    return '¡Todo listo por aquí! ¿Qué te gustaría avanzar hoy: aprender algo, organizar tus tareas o trabajar en un proyecto?';
+  }
+
+  if (/\\b(qui[eé]ro hablar|podemos hablar|esc[uú]chame|tengo una idea|tengo un problema)\\b/i.test(lower)) {
+    return 'Claro, cuéntame. Te leeré y trataré de ayudarte con lo que pueda. Si se trata de algo importante que quieras conservar, puedo guardarlo como recuerdo cuando me lo pidas explícitamente.';
+  }
+
+  if (/\\b(negocio|emprender|emprendimiento|vender por internet|reventa|reselling)\\b/i.test(lower)) {
+    return 'Vamos paso a paso. Para empezar un negocio de reventa, primero elige una categoría de producto, comprueba la demanda y calcula todos los costes antes de comprar inventario. Si me dices tu presupuesto y qué productos te interesan, te ayudo a organizar un plan inicial.';
+  }
+
   return 'Voy directo: todavía no comprendo mensajes libres como una IA conversacional. Sí puedo ayudarte con tareas, notas, preferencias y planes sencillos. Prueba “ayuda” o cuéntame si quieres organizar un objetivo, guardar una nota o gestionar tareas.';
 }
 
